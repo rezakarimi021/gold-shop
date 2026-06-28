@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { XCircle, RefreshCw } from "lucide-react";
 import { ROUTES } from "@/constants/routes";

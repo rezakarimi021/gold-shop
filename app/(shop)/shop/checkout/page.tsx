@@ -21,6 +21,8 @@ import { ROUTES } from "@/constants/routes";
 import { SHIPPING } from "@/constants/config";
 import { trackBeginCheckout } from "@/lib/analytics";
 
+const LUXURY_EASE = [0.25, 0.46, 0.45, 0.94] as const;
+
 const checkoutSchema = z.object({
   firstName: z.string().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
   lastName: z.string().min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد"),
