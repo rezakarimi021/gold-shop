@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+build
+.pnpm-store
+pnpm-lock.yaml
+public
+*.min.js
+*.min.css

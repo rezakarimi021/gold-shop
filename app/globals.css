@@ -1,0 +1,713 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE VARIANT
+   Class-based. Inactive in v1 — add `.dark` to <html> to activate.
+───────────────────────────────────────────────────────────────────────────── */
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TAILWIND THEME BRIDGE — maps CSS vars to Tailwind utilities
+   Source of truth: :root block below. Change values there, not here.
+───────────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  /* ── Semantic colors ──────────────────────────────────────────────────── */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* ── Gold brand system ────────────────────────────────────────────────── */
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-muted: var(--gold-muted);
+  --color-gold-foreground: var(--gold-foreground);
+
+  /* ── Status ───────────────────────────────────────────────────────────── */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* ── Fonts ────────────────────────────────────────────────────────────── */
+  --font-sans: var(--font-geist, system-ui, sans-serif);
+  --font-display: var(--font-vazirmatn, var(--font-sans));
+
+  /* ── Display type scale — for hero/editorial typography ──────────────── */
+  --text-display-xl: clamp(3.25rem, 7vw + 1rem, 6rem);
+  --text-display-lg: clamp(2.5rem, 5vw + 0.5rem, 4.5rem);
+  --text-display-md: clamp(1.875rem, 3.5vw + 0.25rem, 3rem);
+  --text-display-sm: clamp(1.5rem, 2.5vw, 2.25rem);
+
+  /* ── Border radius ────────────────────────────────────────────────────── */
+  --radius-xs: var(--radius-xs-val);
+  --radius-sm: var(--radius-sm-val);
+  --radius-md: var(--radius-md-val);
+  --radius-lg: var(--radius-lg-val);
+  --radius-xl: var(--radius-xl-val);
+  --radius-2xl: var(--radius-2xl-val);
+  --radius-full: 9999px;
+
+  /* ── Luxury shadow scale ──────────────────────────────────────────────── */
+  --shadow-luxury-xs: var(--shadow-xs-val);
+  --shadow-luxury-sm: var(--shadow-sm-val);
+  --shadow-luxury-md: var(--shadow-md-val);
+  --shadow-luxury-lg: var(--shadow-lg-val);
+  --shadow-luxury-xl: var(--shadow-xl-val);
+
+  /* ── Motion — slow, soft, confident ──────────────────────────────────── */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+  --duration-gentle: 450ms;
+  --ease-luxury: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — THE SINGLE SOURCE OF TRUTH
+   Change anything about the brand here. Tailwind + shadcn both inherit.
+───────────────────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    /* ── Palette: Backgrounds ───────────────────────────────────────────────
+       Warm ivory, never clinical white. Warmth = perceived luxury.
+    ──────────────────────────────────────────────────────────────────────── */
+    --background: oklch(0.985 0.004 83); /* #FAF8F4 — warm ivory */
+    --foreground: oklch(0.148 0.01 56); /* #1C1814 — warm near-black */
+
+    /* ── Surfaces ───────────────────────────────────────────────────────────
+       Cards are 1% lighter than background — creates depth without shadow.
+    ──────────────────────────────────────────────────────────────────────── */
+    --card: oklch(0.995 0.002 83); /* #FDFCFA — barely warm white */
+    --card-foreground: oklch(0.148 0.01 56);
+    --popover: oklch(0.999 0.001 83);
+    --popover-foreground: oklch(0.148 0.01 56);
+
+    /* ── Primary: Warm Gold ─────────────────────────────────────────────────
+       The anchor of the entire brand. Used rarely — only for CTAs and
+       focus rings. Gold earns its place through scarcity.
+    ──────────────────────────────────────────────────────────────────────── */
+    --primary: oklch(0.632 0.128 76.4); /* #B8922C — warm gold */
+    --primary-foreground: oklch(0.995 0.002 83);
+
+    /* ── Secondary: Deep Charcoal ───────────────────────────────────────────
+       Near-black with warmth. For secondary CTAs and dark sections.
+    ──────────────────────────────────────────────────────────────────────── */
+    --secondary: oklch(0.228 0.01 56); /* #221E1A — warm charcoal */
+    --secondary-foreground: oklch(0.985 0.004 83);
+
+    /* ── Muted ──────────────────────────────────────────────────────────────
+       Quiet background for section dividers, disabled states.
+    ──────────────────────────────────────────────────────────────────────── */
+    --muted: oklch(0.942 0.007 80); /* #EDE8E0 — warm light gray */
+    --muted-foreground: oklch(0.512 0.011 58); /* #7A7268 — warm mid-gray */
+
+    /* ── Accent ─────────────────────────────────────────────────────────────
+       Subtle warm tint for hover states and soft highlights.
+    ──────────────────────────────────────────────────────────────────────── */
+    --accent: oklch(0.94 0.01 79); /* #EAE4DA — warm stone */
+    --accent-foreground: oklch(0.228 0.01 56);
+
+    /* ── Destructive ────────────────────────────────────────────────────────
+       Muted crimson. Professional, never alarming.
+    ──────────────────────────────────────────────────────────────────────── */
+    --destructive: oklch(0.485 0.152 18); /* #8B3A2E — muted crimson */
+    --destructive-foreground: oklch(0.985 0.004 83);
+
+    /* ── Borders and Inputs ─────────────────────────────────────────────────
+       Barely visible. Luxury boundaries are felt, not seen.
+    ──────────────────────────────────────────────────────────────────────── */
+    --border: oklch(0.882 0.011 78); /* #DDD6CA — warm light border */
+    --input: oklch(0.882 0.011 78);
+    --ring: oklch(0.632 0.128 76.4); /* gold focus ring */
+
+    /* ── Gold Brand System ──────────────────────────────────────────────────
+       Five-tone gold scale. Anchor → light → dark → muted → foreground.
+       Use sparingly. Gold's power comes from restraint.
+    ──────────────────────────────────────────────────────────────────────── */
+    --gold: oklch(0.632 0.128 76.4); /* primary gold */
+    --gold-light: oklch(0.752 0.11 80); /* hover, shine states */
+    --gold-dark: oklch(0.512 0.144 70); /* pressed, active states */
+    --gold-muted: oklch(0.895 0.05 78); /* very subtle gold tint */
+    --gold-foreground: oklch(0.148 0.01 56); /* text on gold */
+
+    /* ── Status ─────────────────────────────────────────────────────────────
+       Muted, professional. Never neon.
+    ──────────────────────────────────────────────────────────────────────── */
+    --success: oklch(0.544 0.138 150); /* soft emerald */
+    --success-foreground: oklch(0.985 0.004 83);
+    --warning: oklch(0.676 0.152 74); /* warm amber */
+    --warning-foreground: oklch(0.148 0.01 56);
+    --info: oklch(0.518 0.116 244); /* slate blue */
+    --info-foreground: oklch(0.985 0.004 83);
+
+    /* ── Radius ─────────────────────────────────────────────────────────────
+       Soft luxury geometry. Never sharp, never pill-shaped.
+    ──────────────────────────────────────────────────────────────────────── */
+    --radius-xs-val: 6px; /* inline elements, chips */
+    --radius-sm-val: 8px; /* buttons, inputs */
+    --radius-md-val: 12px; /* cards (compact) */
+    --radius-lg-val: 16px; /* cards (standard) */
+    --radius-xl-val: 24px; /* modals */
+    --radius-2xl-val: 32px; /* large modals */
+    --radius: 0.625rem; /* shadcn compatibility alias */
+
+    /* ── Shadow scale ───────────────────────────────────────────────────────
+       Natural shadows — the light source is above and slightly forward.
+       Shadows are warm (okclh hue 56 = warm brown, not neutral gray).
+    ──────────────────────────────────────────────────────────────────────── */
+    --shadow-xs-val: 0 1px 2px 0 oklch(0.148 0.01 56 / 0.04);
+    --shadow-sm-val:
+      0 1px 3px 0 oklch(0.148 0.01 56 / 0.06), 0 1px 2px -1px oklch(0.148 0.01 56 / 0.04);
+    --shadow-md-val:
+      0 4px 16px -2px oklch(0.148 0.01 56 / 0.08), 0 2px 4px -2px oklch(0.148 0.01 56 / 0.04);
+    --shadow-lg-val:
+      0 12px 32px -4px oklch(0.148 0.01 56 / 0.1), 0 4px 8px -4px oklch(0.148 0.01 56 / 0.06);
+    --shadow-xl-val:
+      0 24px 56px -8px oklch(0.148 0.01 56 / 0.13), 0 8px 16px -8px oklch(0.148 0.01 56 / 0.08);
+    --shadow-glow-gold:
+      0 0 0 1px oklch(0.632 0.128 76.4 / 0.25), 0 4px 16px -4px oklch(0.632 0.128 76.4 / 0.2);
+
+    /* shadcn sidebar tokens — required for compatibility */
+    --sidebar: oklch(0.985 0.004 83);
+    --sidebar-foreground: oklch(0.148 0.01 56);
+    --sidebar-primary: oklch(0.632 0.128 76.4);
+    --sidebar-primary-foreground: oklch(0.995 0.002 83);
+    --sidebar-accent: oklch(0.94 0.01 79);
+    --sidebar-accent-foreground: oklch(0.228 0.01 56);
+    --sidebar-border: oklch(0.882 0.011 78);
+    --sidebar-ring: oklch(0.632 0.128 76.4);
+
+    /* shadcn chart tokens — required for compatibility */
+    --chart-1: oklch(0.632 0.128 76.4);
+    --chart-2: oklch(0.512 0.144 70);
+    --chart-3: oklch(0.895 0.05 78);
+    --chart-4: oklch(0.228 0.01 56);
+    --chart-5: oklch(0.752 0.11 80);
+  }
+
+  /* ── Dark Mode Tokens ───────────────────────────────────────────────────────
+     Architecture complete. Inactive in v1. Add `.dark` to <html> to activate.
+     Warm charcoal (not pure black) — deep warmth is a luxury signal.
+  ────────────────────────────────────────────────────────────────────────── */
+  .dark {
+    --background: oklch(0.118 0.008 56);
+    --foreground: oklch(0.935 0.006 83);
+    --card: oklch(0.152 0.01 56);
+    --card-foreground: oklch(0.935 0.006 83);
+    --popover: oklch(0.152 0.01 56);
+    --popover-foreground: oklch(0.935 0.006 83);
+    --primary: oklch(0.692 0.128 76.4);
+    --primary-foreground: oklch(0.118 0.008 56);
+    --secondary: oklch(0.248 0.012 56);
+    --secondary-foreground: oklch(0.935 0.006 83);
+    --muted: oklch(0.198 0.01 56);
+    --muted-foreground: oklch(0.632 0.01 60);
+    --accent: oklch(0.22 0.012 56);
+    --accent-foreground: oklch(0.935 0.006 83);
+    --destructive: oklch(0.562 0.152 18);
+    --destructive-foreground: oklch(0.935 0.006 83);
+    --border: oklch(0.248 0.01 56);
+    --input: oklch(0.248 0.01 56);
+    --ring: oklch(0.692 0.128 76.4);
+    --gold: oklch(0.692 0.128 76.4);
+    --gold-light: oklch(0.772 0.11 80);
+    --gold-dark: oklch(0.572 0.144 70);
+    --gold-muted: oklch(0.252 0.048 72);
+    --gold-foreground: oklch(0.935 0.006 83);
+    --success: oklch(0.612 0.138 150);
+    --success-foreground: oklch(0.118 0.008 56);
+    --warning: oklch(0.732 0.152 74);
+    --warning-foreground: oklch(0.118 0.008 56);
+    --info: oklch(0.582 0.116 244);
+    --info-foreground: oklch(0.118 0.008 56);
+    --shadow-xs-val: 0 1px 2px 0 oklch(0 0 0 / 0.16);
+    --shadow-sm-val: 0 1px 3px 0 oklch(0 0 0 / 0.2), 0 1px 2px -1px oklch(0 0 0 / 0.12);
+    --shadow-md-val: 0 4px 16px -2px oklch(0 0 0 / 0.28), 0 2px 4px -2px oklch(0 0 0 / 0.16);
+    --shadow-lg-val: 0 12px 32px -4px oklch(0 0 0 / 0.36), 0 4px 8px -4px oklch(0 0 0 / 0.2);
+    --shadow-xl-val: 0 24px 56px -8px oklch(0 0 0 / 0.44), 0 8px 16px -8px oklch(0 0 0 / 0.24);
+    --shadow-glow-gold:
+      0 0 0 1px oklch(0.692 0.128 76.4 / 0.35), 0 4px 20px -4px oklch(0.692 0.128 76.4 / 0.3);
+    --sidebar: oklch(0.152 0.01 56);
+    --sidebar-foreground: oklch(0.935 0.006 83);
+    --sidebar-primary: oklch(0.692 0.128 76.4);
+    --sidebar-primary-foreground: oklch(0.118 0.008 56);
+    --sidebar-accent: oklch(0.22 0.012 56);
+    --sidebar-accent-foreground: oklch(0.935 0.006 83);
+    --sidebar-border: oklch(0.248 0.01 56);
+    --sidebar-ring: oklch(0.692 0.128 76.4);
+  }
+
+  /* ── Base reset ─────────────────────────────────────────────────────────────
+     Establishes the luxury baseline for all elements.
+  ────────────────────────────────────────────────────────────────────────── */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border);
+    outline-color: var(--ring);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-display, var(--font-sans, system-ui, sans-serif));
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1,
+      "calt" 1;
+    overflow-x: hidden;
+  }
+
+  /* Gold focus ring — visible but luxurious */
+  :focus-visible {
+    outline: 1.5px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs-val);
+  }
+
+  /* Brand-aligned text selection */
+  ::selection {
+    background-color: var(--gold-muted);
+    color: var(--foreground);
+  }
+
+  /* Heading defaults — light weight for luxury feel */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+
+  /* Accessible reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LUXURY SKELETON ANIMATION
+   Slow, gold-tinted shimmer. Reassures without distracting.
+───────────────────────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes pulse-luxury {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out-to-bottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-5px);
+  }
+  30% {
+    transform: translateX(5px);
+  }
+  45% {
+    transform: translateX(-4px);
+  }
+  60% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  90% {
+    transform: translateX(2px);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN SYSTEM UTILITIES
+   These classes are used across all components and pages.
+───────────────────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* ── Layout ──────────────────────────────────────────────────────────────── */
+
+  /* Luxury container — breathing room grows with viewport */
+  .container-luxury {
+    width: 100%;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 5rem);
+  }
+
+  .container-narrow {
+    width: 100%;
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 4rem);
+  }
+
+  /* Section rhythm — generous vertical breathing room */
+  .section-spacing {
+    padding-block: clamp(4rem, 8vw, 9rem);
+  }
+
+  .section-spacing-sm {
+    padding-block: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  /* ── Product Grids ──────────────────────────────────────────────────────── */
+
+  /* 2 → 3 → 4 columns: the primary jewelry display grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  @media (min-width: 640px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  /* Featured 2-up grid — hero product pairs */
+  .product-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .product-grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  /* Category/collection 3-up grid */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .category-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .category-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  /* ── Typography ──────────────────────────────────────────────────────────── */
+
+  /* Display — for hero headings. Light weight, tight tracking. */
+  .type-display-xl {
+    font-size: var(--text-display-xl);
+    font-weight: 300;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+  }
+
+  .type-display-lg {
+    font-size: var(--text-display-lg);
+    font-weight: 300;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
+  .type-display-md {
+    font-size: var(--text-display-md);
+    font-weight: 300;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+  }
+
+  .type-display-sm {
+    font-size: var(--text-display-sm);
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  /* Overline — small uppercase labels above headings */
+  .type-overline {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  /* Price — gold pricing, calm weight */
+  .type-price {
+    font-size: 1.125rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+  }
+
+  .type-price-sm {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+  }
+
+  /* Karat badge text */
+  .type-karat {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── Interactions ────────────────────────────────────────────────────────── */
+
+  /* The standard luxury transition — all interactive elements */
+  .transition-luxury {
+    transition-property:
+      color, background-color, border-color, opacity, transform, box-shadow, outline-color;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-luxury);
+  }
+
+  .transition-luxury-slow {
+    transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+    transition-duration: var(--duration-slow);
+    transition-timing-function: var(--ease-luxury);
+  }
+
+  /* Product image hover — barely perceptible zoom */
+  .image-hover-luxury {
+    overflow: hidden;
+  }
+
+  .image-hover-luxury img,
+  .image-hover-luxury [data-luxury-image] {
+    transition: transform var(--duration-gentle) var(--ease-luxury);
+    will-change: transform;
+  }
+
+  .image-hover-luxury:hover img,
+  .image-hover-luxury:hover [data-luxury-image] {
+    transform: scale(1.04);
+  }
+
+  /* ── Shimmer skeleton ────────────────────────────────────────────────────── */
+
+  /* Gold-tinted shimmer — luxury brands even load beautifully */
+  .shimmer {
+    background: linear-gradient(105deg, var(--muted) 25%, var(--gold-muted) 50%, var(--muted) 75%);
+    background-size: 400% 100%;
+    animation: shimmer 2.2s ease-in-out infinite;
+  }
+
+  /* ── Dividers ────────────────────────────────────────────────────────────── */
+
+  /* Gold rule — editorial section separator */
+  .divider-gold {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--gold-muted),
+      var(--gold),
+      var(--gold-muted),
+      transparent
+    );
+  }
+
+  /* ── Shadows ─────────────────────────────────────────────────────────────── */
+
+  .shadow-luxury-xs {
+    box-shadow: var(--shadow-xs-val);
+  }
+  .shadow-luxury-sm {
+    box-shadow: var(--shadow-sm-val);
+  }
+  .shadow-luxury-md {
+    box-shadow: var(--shadow-md-val);
+  }
+  .shadow-luxury-lg {
+    box-shadow: var(--shadow-lg-val);
+  }
+  .shadow-luxury-xl {
+    box-shadow: var(--shadow-xl-val);
+  }
+  .shadow-glow-gold {
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  /* ── Animations ──────────────────────────────────────────────────────────── */
+
+  .animate-fade-in {
+    animation: fade-in var(--duration-slow) var(--ease-out-expo) both;
+  }
+
+  .animate-scale-in {
+    animation: scale-in var(--duration-slow) var(--ease-out-expo) both;
+  }
+
+  .animate-slide-in {
+    animation: slide-in-from-bottom var(--duration-slow) var(--ease-out-expo) both;
+  }
+
+  .animate-shake {
+    animation: shake 0.42s ease-out;
+  }
+
+  /* ── Accessibility ───────────────────────────────────────────────────────── */
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* ── Misc ────────────────────────────────────────────────────────────────── */
+
+  /* Prevent layout shift during image loading */
+  .aspect-product {
+    aspect-ratio: 3 / 4;
+  }
+  .aspect-collection {
+    aspect-ratio: 4 / 3;
+  }
+  .aspect-category {
+    aspect-ratio: 1 / 1;
+  }
+  .aspect-hero {
+    aspect-ratio: 16 / 9;
+  }
+}

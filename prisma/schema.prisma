@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Users ──────────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  phone        String?
+  passwordHash String?
+  role         Role     @default(CUSTOMER)
+
+  orders       Order[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+// ─── Orders ─────────────────────────────────────────────────────────────────
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+
+  // Customer snapshot (works for both guest and authenticated)
+  customerName  String
+  customerPhone String
+  customerEmail String?
+
+  // Shipping address snapshot at order time
+  shippingAddress Json
+
+  status        OrderStatus @default(PENDING)
+  paymentMethod String      // "online" | "card"
+
+  subtotal      Int         // in Tomans
+  shippingCost  Int         @default(0)
+  discount      Int         @default(0)
+  total         Int
+
+  items         OrderItem[]
+  payment       Payment?
+
+  notes         String?
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([userId])
+  @@index([orderNumber])
+  @@index([status])
+}
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+
+  productId String
+  variantId String
+  quantity  Int
+  unitPrice Int     // in Tomans at time of order
+
+  // Full product snapshot — never stales with future product changes
+  snapshot  Json    // { name, karat, weight, image, sku }
+
+  @@index([orderId])
+}
+
+// ─── Payments ────────────────────────────────────────────────────────────────
+
+model Payment {
+  id              String        @id @default(cuid())
+  order           Order         @relation(fields: [orderId], references: [id])
+  orderId         String        @unique
+
+  gateway         String        // "zarinpal" | "card" | "mock"
+  authority       String?       // ZarinPal authority token
+  gatewayRef      String?       // confirmed transaction ID from gateway
+  amount          Int           // in Tomans
+
+  status          PaymentStatus @default(PENDING)
+  gatewayResponse Json?         // raw gateway payload for audit trail
+
+  initiatedAt     DateTime      @default(now())
+  completedAt     DateTime?
+
+  @@index([authority])
+  @@index([status])
+}
+
+enum PaymentStatus {
+  PENDING
+  INITIATED
+  SUCCESS
+  FAILED
+  CANCELLED
+}
