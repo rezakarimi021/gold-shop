@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { mockProducts } from "@/data/mock/products.mock";
+
+export async function generateStaticParams() {
+  return mockProducts.map((p) => ({ slug: p.slug }));
+}
 import { ChevronLeft } from "lucide-react";
 import { productsService } from "@/services/products.service";
 import { ProductGallery } from "@/components/shared/pdp/ProductGallery";

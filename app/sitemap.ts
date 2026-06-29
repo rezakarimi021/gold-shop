@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { mockProducts } from "@/data/mock/products.mock";
+
+export const dynamic = "force-static";
 import { siteConfig } from "@/lib/config";
 import { blogPosts } from "@/data/blog/posts";
 

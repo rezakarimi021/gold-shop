@@ -1,14 +1,11 @@
-import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default auth((request) => {
-  if (!request.auth) {
-    const loginUrl = new URL("/auth/login", request.url);
-    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+// Auth guard is server-only and cannot run on static hosts.
+// The account pages show a login prompt when no session is detected client-side.
+export function middleware(_request: NextRequest) {
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/account/:path*"],

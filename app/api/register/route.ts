@@ -1,5 +1,6 @@
-export const dynamic = "force-dynamic";
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+
+export const dynamic = "force-static";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -20,14 +21,20 @@ export async function POST(request: NextRequest) {
   const parsed = schema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "اطلاعات وارد شده نامعتبر است" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Ø§Ø·Ù„Ø§Ø¹Ø§Øª ÙˆØ§Ø±Ø¯ Ø´Ø¯Ù‡ Ù†Ø§Ù…Ø¹ØªØ¨Ø± Ø§Ø³Øª" },
+      { status: 400 },
+    );
   }
 
   const { name, email, phone, password } = parsed.data;
 
   const existing = await db.user.findUnique({ where: { email } });
   if (existing) {
-    return NextResponse.json({ error: "این ایمیل قبلاً ثبت شده است" }, { status: 409 });
+    return NextResponse.json(
+      { error: "Ø§ÛŒÙ† Ø§ÛŒÙ…ÛŒÙ„ Ù‚Ø¨Ù„Ø§Ù‹ Ø«Ø¨Øª Ø´Ø¯Ù‡ Ø§Ø³Øª" },
+      { status: 409 },
+    );
   }
 
   const passwordHash = await bcrypt.hash(password, 12);

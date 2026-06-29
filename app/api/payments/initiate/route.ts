@@ -1,5 +1,6 @@
-export const dynamic = "force-dynamic";
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+
+export const dynamic = "force-static";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { zarinpal } from "@/lib/zarinpal";
@@ -11,17 +12,20 @@ export async function POST(request: NextRequest) {
   const parsed = schema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "شناسه سفارش نامعتبر" }, { status: 400 });
+    return NextResponse.json({ error: "Ø´Ù†Ø§Ø³Ù‡ Ø³ÙØ§Ø±Ø´ Ù†Ø§Ù…Ø¹ØªØ¨Ø±" }, { status: 400 });
   }
 
   const order = await db.order.findUnique({ where: { id: parsed.data.orderId } });
 
   if (!order) {
-    return NextResponse.json({ error: "سفارش یافت نشد" }, { status: 404 });
+    return NextResponse.json({ error: "Ø³ÙØ§Ø±Ø´ ÛŒØ§ÙØª Ù†Ø´Ø¯" }, { status: 404 });
   }
 
   if (order.status === "PAID") {
-    return NextResponse.json({ error: "این سفارش قبلاً پرداخت شده است" }, { status: 409 });
+    return NextResponse.json(
+      { error: "Ø§ÛŒÙ† Ø³ÙØ§Ø±Ø´ Ù‚Ø¨Ù„Ø§Ù‹ Ù¾Ø±Ø¯Ø§Ø®Øª Ø´Ø¯Ù‡ Ø§Ø³Øª" },
+      { status: 409 },
+    );
   }
 
   const baseUrl =
@@ -31,7 +35,7 @@ export async function POST(request: NextRequest) {
   try {
     const payment = await zarinpal.requestPayment({
       amount: order.total,
-      description: `سفارش ${order.orderNumber} — طلافروشی گُلد`,
+      description: `Ø³ÙØ§Ø±Ø´ ${order.orderNumber} â€” Ø·Ù„Ø§ÙØ±ÙˆØ´ÛŒ Ú¯ÙÙ„Ø¯`,
       callback_url: `${baseUrl}/api/payments/verify`,
       mobile: order.customerPhone,
       email: order.customerEmail ?? undefined,
@@ -56,6 +60,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ paymentUrl: payment.paymentUrl });
   } catch (err) {
     console.error("[payments/initiate]", err);
-    return NextResponse.json({ error: "خطا در اتصال به درگاه پرداخت" }, { status: 502 });
+    return NextResponse.json(
+      { error: "Ø®Ø·Ø§ Ø¯Ø± Ø§ØªØµØ§Ù„ Ø¨Ù‡ Ø¯Ø±Ú¯Ø§Ù‡ Ù¾Ø±Ø¯Ø§Ø®Øª" },
+      { status: 502 },
+    );
   }
 }
