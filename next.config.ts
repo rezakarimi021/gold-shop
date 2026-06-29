@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
   basePath: "/gold-shop",
   trailingSlash: true,
   images: {
-    unoptimized: true,
-    formats: ["image/avif", "image/webp"],
+    loaderFile: "./imageLoader.ts",
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "plus.unsplash.com" },

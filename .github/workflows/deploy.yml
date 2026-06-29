@@ -42,6 +42,7 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_URL: https://rezakarimi021.github.io/gold-shop
+          NEXT_PUBLIC_BASEPATH: /gold-shop
           DATABASE_URL: postgresql://dummy:dummy@localhost:5432/dummy
           AUTH_SECRET: 0000000000000000000000000000000000000000000
           ZARINPAL_MERCHANT_ID: 00000000-0000-0000-0000-000000000000
