@@ -30,4 +30,5 @@ export const ROUTES = {
   blogPost: (slug: string) => `/blog/${slug}`,
   about: "/about",
   contact: "/contact",
+  goldPrice: "/gold-price",
 } as const;

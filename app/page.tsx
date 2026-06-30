@@ -7,6 +7,7 @@ import { CategoryShowcase } from "@/components/shared/home/CategoryShowcase";
 import { TrustSection } from "@/components/shared/home/TrustSection";
 import { LimitedOffers } from "@/components/shared/home/LimitedOffers";
 import { NewsletterSection } from "@/components/shared/home/NewsletterSection";
+import { GoldPriceSection } from "@/features/gold-price/GoldPriceSection";
 import { productsService } from "@/services/products.service";
 import { categoriesService } from "@/services/categories.service";
 
@@ -29,6 +30,8 @@ const HomePage = async () => {
         <BestSellers products={featured} />
 
         <CategoryShowcase categories={categories} />
+
+        <GoldPriceSection />
 
         <TrustSection />
 

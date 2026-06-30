@@ -10,6 +10,8 @@ import { useCartStore } from "@/store/cart.store";
 import { useWishlistStore } from "@/store/wishlist.store";
 import { formatPrice, formatWeight } from "@/utils/formatPrice";
 import { trackViewItem, trackAddToCart } from "@/lib/analytics";
+import { ProductPriceBreakdown } from "@/features/gold-price/ProductPriceBreakdown";
+import { useProductPrice } from "@/hooks/useProductPrice";
 import type { Product, ProductSummary, ProductVariant } from "@/types/product";
 
 const LUXURY_EASE = [0.25, 0.46, 0.45, 0.94] as const;
@@ -49,6 +51,13 @@ export const ProductActions = ({ product }: ProductActionsProps) => {
 
   const isOutOfStock = selectedVariant.stock === 0;
   const isLowStock = selectedVariant.stock > 0 && selectedVariant.stock <= 3;
+
+  const { breakdown: liveBreakdown } = useProductPrice({
+    weightGrams: selectedVariant.weight,
+    karat: selectedVariant.karat,
+    fallbackPrice: selectedVariant.price,
+  });
+  const displayPrice = liveBreakdown?.total ?? selectedVariant.price;
 
   // Fire view_item analytics event on mount
   useEffect(() => {
@@ -112,20 +121,20 @@ export const ProductActions = ({ product }: ProductActionsProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Price */}
-      <div>
-        <p className="type-overline mb-1 text-muted-foreground">قیمت</p>
-        <p className="text-3xl font-light tracking-tight text-foreground">
-          {isOutOfStock ? (
-            <span className="type-overline text-muted-foreground">ناموجود</span>
-          ) : (
-            formatPrice(selectedVariant.price)
-          )}
-        </p>
+      {/* Price — live calculated from gold price */}
+      <div className="flex flex-col gap-2">
+        <p className="type-overline text-muted-foreground">قیمت</p>
+        {isOutOfStock ? (
+          <span className="type-overline text-muted-foreground">ناموجود</span>
+        ) : (
+          <ProductPriceBreakdown
+            weightGrams={selectedVariant.weight}
+            karat={selectedVariant.karat}
+            fallbackPrice={selectedVariant.price}
+          />
+        )}
         {isLowStock && (
-          <p className="mt-1 text-xs text-warning">
-            موجودی کم — فقط {selectedVariant.stock} عدد باقی
-          </p>
+          <p className="text-xs text-warning">موجودی کم — فقط {selectedVariant.stock} عدد باقی</p>
         )}
       </div>
 
@@ -282,7 +291,7 @@ export const ProductActions = ({ product }: ProductActionsProps) => {
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-foreground">{product.name}</p>
-                  <p className="text-sm text-gold">{formatPrice(selectedVariant.price)}</p>
+                  <p className="text-sm text-gold">{formatPrice(displayPrice)}</p>
                 </div>
                 <button
                   type="button"
