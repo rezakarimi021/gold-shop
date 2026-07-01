@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ProductCard } from "@/components/ui/product-card";
 import { ProductFilters } from "@/components/shared/plp/ProductFilters";
@@ -135,11 +136,31 @@ export function ShopPageClient({ allProducts }: ShopPageClientProps) {
 
             {products.length > 0 ? (
               <>
-                <div className="product-grid">
+                <motion.div
+                  className="product-grid"
+                  variants={{
+                    hidden: {},
+                    visible: { transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
+                  }}
+                  initial="hidden"
+                  animate="visible"
+                >
                   {products.map((product, i) => (
-                    <ProductCard key={product.id} product={product} priority={i < 4} />
+                    <motion.div
+                      key={product.id}
+                      variants={{
+                        hidden: { opacity: 0, y: 16 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.46, ease: [0.25, 0.46, 0.45, 0.94] },
+                        },
+                      }}
+                    >
+                      <ProductCard product={product} priority={i < 4} />
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
 
                 {totalPages > 1 && (
                   <div className="mt-12 flex items-center justify-center gap-2">

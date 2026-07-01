@@ -102,13 +102,12 @@ const ProductCard = ({
                 "border border-border/50",
                 "text-muted-foreground",
                 "shadow-luxury-xs",
-                /* Show on hover, hide by default */
-                "opacity-0 group-hover:opacity-100",
-                "translate-y-2 group-hover:translate-y-0",
+                /* Touch: always visible; pointer: reveal on hover */
+                "wishlist-reveal group-hover:translate-y-0 group-hover:opacity-100",
                 "transition-[opacity,transform] duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
                 "hover:bg-card hover:text-foreground",
                 "outline-none focus-visible:translate-y-0 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring",
-                isWishlisted && "translate-y-0 text-destructive opacity-100",
+                isWishlisted && "!translate-y-0 text-destructive !opacity-100",
               )}
             >
               <Heart className={cn("size-4", isWishlisted && "fill-current")} />

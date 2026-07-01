@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,30 +22,17 @@ export const NewsletterSection = () => {
   };
 
   return (
-    <section
-      className={cn("section-spacing-sm", "bg-[oklch(0.148_0.010_56)]")}
-      aria-label="خبرنامه"
-    >
+    <section className={cn("section-spacing-sm", "bg-secondary")} aria-label="خبرنامه">
       <div className="container-narrow text-center">
-        {/* Icon */}
-        <div
-          className={cn(
-            "mx-auto mb-6 flex size-14 items-center justify-center rounded-full",
-            "border border-gold/20 bg-gold/10",
-          )}
-          aria-hidden="true"
-        >
-          <Mail className="size-6 text-gold" />
-        </div>
+        {/* Gold fine rule — purely decorative */}
+        <div aria-hidden="true" className="mx-auto mb-8 h-px w-12 bg-gold/40" />
 
-        <p className="type-overline mb-4 text-gold">خبرنامه</p>
-
-        <h2 className="type-display-sm mb-4 text-[oklch(0.935_0.006_83)]">اولین باشید</h2>
+        <h2 className="type-display-sm mb-4 text-secondary-foreground">اولین باشید</h2>
 
         <p
           className={cn(
             "mx-auto mb-10 max-w-[44ch]",
-            "text-base leading-[1.8] font-light text-[oklch(0.935_0.006_83)]/60",
+            "text-base leading-[1.8] font-light text-secondary-foreground/60",
           )}
         >
           از جدیدترین کلکسیون‌ها، پیشنهادات ویژه اعضا، و تخفیف‌های اختصاصی پیش از همه باخبر شوید.
@@ -78,8 +64,8 @@ export const NewsletterSection = () => {
               required
               className={cn(
                 "h-12 flex-1 rounded-xl",
-                "border-white/10 bg-white/5",
-                "text-[oklch(0.935_0.006_83)] placeholder:text-[oklch(0.935_0.006_83)]/30",
+                "border-secondary-foreground/10 bg-secondary-foreground/5",
+                "text-secondary-foreground placeholder:text-secondary-foreground/30",
                 "focus-visible:border-gold/50 focus-visible:ring-gold/20",
               )}
               aria-label="آدرس ایمیل"
@@ -97,7 +83,7 @@ export const NewsletterSection = () => {
           </form>
         )}
 
-        <p className="mt-5 text-xs text-[oklch(0.935_0.006_83)]/30">
+        <p className="mt-5 text-xs text-secondary-foreground/30">
           اطلاعات شما محفوظ است. هر زمان می‌توانید لغو اشتراک کنید.
         </p>
       </div>

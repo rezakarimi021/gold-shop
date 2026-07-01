@@ -73,7 +73,7 @@ export const LimitedOffers = ({ product }: LimitedOffersProps) => {
                 <ArrowLeft
                   className={cn(
                     "size-3.5 transition-transform duration-[220ms]",
-                    "rtl:rotate-180 group-hover:rtl:-translate-x-1",
+                    "rtl:rotate-180 group-hover:rtl:translate-x-1",
                   )}
                 />
               </Link>

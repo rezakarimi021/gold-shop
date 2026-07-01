@@ -320,6 +320,16 @@
     color: var(--foreground);
   }
 
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
   /* Accessible reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -696,6 +706,22 @@
   }
 
   /* ── Misc ────────────────────────────────────────────────────────────────── */
+
+  /* Wishlist reveal — always visible on touch, hover-gated on pointer */
+  .wishlist-reveal {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition:
+      opacity var(--duration-base) var(--ease-luxury),
+      transform var(--duration-base) var(--ease-out-expo);
+  }
+
+  @media (hover: none) {
+    .wishlist-reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   /* Prevent layout shift during image loading */
   .aspect-product {

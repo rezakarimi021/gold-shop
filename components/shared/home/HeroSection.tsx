@@ -97,15 +97,7 @@ export const HeroSection = () => {
         >
           جواهراتی که
           <br />
-          <span
-            className={cn(
-              "font-extralight italic",
-              "bg-gradient-to-l from-[#f0d060] via-[#d4a820] to-[#c8960c]",
-              "bg-clip-text text-transparent",
-            )}
-          >
-            داستان می‌گویند
-          </span>
+          <span className="font-extralight text-gold-light italic">داستان می‌گویند</span>
         </motion.h1>
 
         {/* Body */}
@@ -146,7 +138,7 @@ export const HeroSection = () => {
             <ArrowLeft
               className={cn(
                 "size-3.5 transition-transform duration-[220ms]",
-                "rtl:rotate-180 group-hover:rtl:-translate-x-1",
+                "rtl:rotate-180 group-hover:rtl:translate-x-1",
               )}
             />
           </Link>

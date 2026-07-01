@@ -130,11 +130,8 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           {/* Related products */}
           {relatedFiltered.length > 0 && (
             <section className="mt-20" aria-label="محصولات مرتبط">
-              <div className="mb-8 flex items-end justify-between">
-                <div>
-                  <p className="type-overline mb-2 text-gold">پیشنهاد ما</p>
-                  <h2 className="type-display-sm text-foreground">محصولات مشابه</h2>
-                </div>
+              <div className="mb-8">
+                <h2 className="type-display-sm text-foreground">محصولات مشابه</h2>
               </div>
               <div className="product-grid">
                 {relatedFiltered.map((p, i) => (

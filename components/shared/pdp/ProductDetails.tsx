@@ -64,16 +64,21 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
 
   return (
     <div className="mt-16">
-      {/* Trust badges strip */}
-      <div className="mb-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {TRUST_ITEMS.map(({ icon: Icon, title, desc }) => (
+      {/* Trust badges strip — horizontal, no card wrappers */}
+      <div className="mb-14 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4">
+        {TRUST_ITEMS.map(({ icon: Icon, title, desc }, i) => (
           <div
             key={title}
-            className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 text-center"
+            className={cn(
+              "flex items-start gap-3",
+              i > 0 && "sm:border-s sm:border-border/60 sm:ps-6",
+            )}
           >
-            <Icon className="size-5 text-gold" aria-hidden="true" />
-            <p className="text-xs font-medium text-foreground">{title}</p>
-            <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+            <Icon className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
+            <div>
+              <p className="mb-0.5 text-xs font-semibold text-foreground">{title}</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+            </div>
           </div>
         ))}
       </div>

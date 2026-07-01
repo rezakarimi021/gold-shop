@@ -4,22 +4,13 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Truck, RotateCcw, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const LUXURY_EASE = [0.25, 0.46, 0.45, 0.94] as const;
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay: i * 0.09, ease: LUXURY_EASE },
-  }),
-};
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 const TRUST_ITEMS = [
   {
     icon: Award,
     title: "طلای اصیل تضمینی",
-    description: "همه محصولات دارای گواهی عیارسنجی از اتحادیه طلا و جواهر ایران.",
+    description: "گواهی عیارسنجی معتبر از اتحادیه طلا و جواهر ایران به همراه هر محصول.",
   },
   {
     icon: ShieldCheck,
@@ -29,58 +20,46 @@ const TRUST_ITEMS = [
   {
     icon: Truck,
     title: "ارسال رایگان",
-    description: "ارسال مطمئن و رایگان برای خریدهای بالای ۵ میلیون تومان در سراسر ایران.",
+    description: "ارسال مطمئن برای خریدهای بالای ۵ میلیون تومان در سراسر ایران.",
   },
   {
     icon: RotateCcw,
     title: "بازگشت ۱۴ روزه",
-    description: "رضایت شما اولویت ماست. بدون سوال، در ۱۴ روز بازگشت کالا پذیرفته می‌شود.",
+    description: "بدون سوال، در ۱۴ روز بازگشت کالا پذیرفته می‌شود.",
   },
 ] as const;
 
 export const TrustSection = () => (
-  <section className="section-spacing-sm border-y border-border bg-muted/40" aria-label="چرا ما">
+  <section className="border-y border-border/50 bg-muted/15 py-10" aria-label="تعهدات ما">
     <div className="container-luxury">
-      <motion.div
-        className="mb-10 text-center"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.5, ease: LUXURY_EASE }}
-      >
-        <p className="type-overline mb-3 text-gold">تعهد ما</p>
-        <h2 className="type-display-sm text-foreground">تجربه خرید بی‌نظیر، تضمین‌شده</h2>
-      </motion.div>
-
-      <div className={cn("grid gap-8", "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4")}>
+      <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
         {TRUST_ITEMS.map(({ icon: Icon, title, description }, i) => (
           <motion.div
             key={title}
-            custom={i}
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
             className={cn(
-              "group flex flex-col items-center text-center",
-              "rounded-2xl p-6",
-              "bg-card shadow-luxury-xs",
-              "transition-[box-shadow,transform] duration-[320ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
-              "hover:-translate-y-0.5 hover:shadow-luxury-md",
+              "flex items-start gap-4",
+              "lg:px-8",
+              i === 0 && "lg:ps-0",
+              i === TRUST_ITEMS.length - 1 && "lg:pe-0",
+              i > 0 && "lg:border-s lg:border-border/60",
             )}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.48, delay: i * 0.09, ease: EASE }}
           >
             <div
               className={cn(
-                "mb-5 flex size-14 items-center justify-center rounded-full",
-                "bg-gold-muted",
-                "transition-colors duration-[220ms] group-hover:bg-gold/15",
+                "mt-0.5 flex size-9 shrink-0 items-center justify-center",
+                "rounded-full bg-gold-muted ring-1 ring-gold/25",
               )}
             >
-              <Icon className="size-6 text-gold" />
+              <Icon className="size-4 text-gold" aria-hidden="true" />
             </div>
-
-            <h3 className="mb-2 text-base font-medium text-foreground">{title}</h3>
-            <p className="text-sm leading-[1.75] text-muted-foreground">{description}</p>
+            <div className="min-w-0">
+              <h3 className="mb-1 text-sm leading-snug font-semibold text-foreground">{title}</h3>
+              <p className="text-xs leading-[1.75] text-muted-foreground">{description}</p>
+            </div>
           </motion.div>
         ))}
       </div>

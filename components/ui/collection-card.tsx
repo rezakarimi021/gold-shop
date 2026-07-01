@@ -84,7 +84,7 @@ const CollectionCard = ({
         مشاهده کلکسیون
         <ArrowLeft
           className={cn(
-            "size-3.5",
+            "size-3.5 rtl:rotate-180",
             "transition-transform duration-[220ms]",
             "group-hover:-translate-x-1 rtl:group-hover:translate-x-1",
           )}

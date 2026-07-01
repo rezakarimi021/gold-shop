@@ -16,33 +16,36 @@ export const FeaturedCollections = ({ collections }: FeaturedCollectionsProps) =
   return (
     <section className="section-spacing bg-background" aria-label="کلکسیون‌های برتر">
       <div className="container-luxury">
-        {/* Section header */}
-        <ScrollReveal className="mb-12 flex items-end justify-between">
-          <div>
-            <p className="type-overline mb-3 text-gold">کلکسیون‌ها</p>
-            <h2 className="type-display-md text-foreground">داستان‌هایی در طلا</h2>
-          </div>
+        {/* Section header — editorial two-column: headline start, description/CTA end */}
+        <ScrollReveal className="mb-14 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
+          <h2 className="type-display-md text-foreground">داستان‌هایی در طلا</h2>
 
-          <Link
-            href={ROUTES.shop}
-            className={cn(
-              "group hidden items-center gap-2 sm:flex",
-              "text-sm font-medium text-muted-foreground",
-              "transition-colors duration-[150ms] hover:text-gold",
-            )}
-          >
-            مشاهده همه
-            <ArrowLeft
+          <div className="flex flex-col items-start gap-4 sm:items-end">
+            <p className="max-w-[28ch] text-sm leading-relaxed text-muted-foreground sm:text-end">
+              هر کلکسیون یک روایت است — ساخته‌شده از طلا، الهام گرفته از فصل‌ها و لحظه‌های زندگی.
+            </p>
+            <Link
+              href={ROUTES.shop}
               className={cn(
-                "size-3.5 transition-transform duration-[220ms]",
-                "rtl:rotate-180 group-hover:rtl:-translate-x-1",
+                "group inline-flex items-center gap-2",
+                "text-sm font-medium text-muted-foreground",
+                "transition-colors duration-[150ms] hover:text-gold",
               )}
-            />
-          </Link>
+            >
+              مشاهده همه کلکسیون‌ها
+              <ArrowLeft
+                className={cn(
+                  "size-3.5 rtl:rotate-180",
+                  "transition-transform duration-[220ms]",
+                  "group-hover:-translate-x-1 rtl:group-hover:translate-x-1",
+                )}
+              />
+            </Link>
+          </div>
         </ScrollReveal>
 
         {/* Collection cards grid */}
-        <ScrollReveal delay={0.1}>
+        <ScrollReveal delay={0.12}>
           <div className="grid gap-6 md:grid-cols-2">
             {collections.slice(0, 2).map((collection, i) => (
               <CollectionCard
@@ -54,16 +57,6 @@ export const FeaturedCollections = ({ collections }: FeaturedCollectionsProps) =
             ))}
           </div>
         </ScrollReveal>
-
-        {/* Mobile CTA */}
-        <div className="mt-8 text-center sm:hidden">
-          <Link
-            href={ROUTES.shop}
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-gold"
-          >
-            مشاهده همه کلکسیون‌ها
-          </Link>
-        </div>
       </div>
     </section>
   );
